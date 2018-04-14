@@ -5,6 +5,8 @@ const cors = require('cors');
 const knex = require('knex');
 const Clarifai = require('clarifai');
 
+const PORT = process.env.PORT || 3000;
+
 const appClarifai = new Clarifai.App({
  apiKey: 'dfcdf8d786de4e2bbe14a29f8b47f975'
 });
@@ -14,10 +16,8 @@ const appClarifai = new Clarifai.App({
 const db = knex({
   client: 'pg',
   connection: {
-    host : '127.0.0.1',
-    user : 'postgres',
-    password : 'asd',
-    database : 'smart-brain'
+    connectionString : process.env.DATABASE_URL,
+    ssl : true,
   }
 });
 
@@ -119,7 +119,7 @@ app.post('/imageUrl', (req,res)=>{
 	.catch((err)=>res.status(400).json('Unable to work with API'))
 })
 
-app.listen(3000,()=>{
-	console.log('app is running on port 3000')
+app.listen(PORT,()=>{
+	console.log('app is running on port', PORT)
 })
 
